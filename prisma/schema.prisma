@@ -34,22 +34,28 @@ model Employee {
 }
 
 model Department {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
+  id        Int          @id @default(autoincrement())
+  name      String       @unique
+  parentId  Int? // Optional self-relation to represent the parent department
+  children  Department[] @relation("ParentChild")
+  parent    Department?  @relation("ParentChild", fields: [parentId], references: [id])
   employees Employee[]
+  jobTitles JobTitle[]
 }
 
 model JobTitle {
-  id        Int        @id @default(autoincrement())
-  title     String     @unique
-  employees Employee[]
+  id           Int        @id @default(autoincrement())
+  title        String     @unique
+  employees    Employee[]
+  departmentId Int
+  department   Department @relation(fields: [departmentId], references: [id])
 }
 
 model PerformanceReview {
   id         Int      @id @default(autoincrement())
   employeeId Int
-  date       DateTime
+  date       DateTime @default(now())
   rating     Int
   comments   String?
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }
