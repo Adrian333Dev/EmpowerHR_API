@@ -1,103 +1,232 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 
-// initialize Prisma Client
 const prisma = new PrismaClient();
 
-const departments: Prisma.DepartmentCreateInput[] = [
-  { name: 'Engineering' },
-  { name: 'Marketing' },
-  { name: 'Sales' },
+
+interface DepartmentSeed {
+  name: string;
+  children?: DepartmentSeed[];
+}
+
+interface JobTitleSeed {
+  title: string;
+  department: string | number; // department name or ID
+}
+
+interface EmployeeSeed {
+  name: string;
+  email: string;
+  jobTitle: string | number; // job title name or ID
+  department: string | number; // department name or ID
+  salary: number;
+  hireDate: Date;
+}
+
+const departments: DepartmentSeed[] = [
+  {
+    name: 'Engineering',
+    children: [
+      {
+        name: 'Software Engineering',
+        children: [{ name: 'Frontend' }, { name: 'Backend' }],
+      },
+      { name: 'Quality Assurance' },
+    ],
+  },
   { name: 'HR' },
+  {
+    name: 'Marketing',
+    children: [{ name: 'Content' }, { name: 'Design' }],
+  },
 ];
 
-const jobTitles: Prisma.JobTitleCreateInput[] = [
-  { title: 'Software Engineer' },
-  { title: 'Software Architect' },
-  { title: 'Product Manager' },
-  { title: 'Sales Representative' },
-  { title: 'HR Manager' },
-  { title: 'HR Specialist' },
-  { title: 'Marketing Manager' },
-  { title: 'Marketing Specialist' },
+const jobTitles: JobTitleSeed[] = [
+  { title: 'Software Engineer', department: 'Software Engineering' },
+  { title: 'Frontend Developer', department: 'Frontend' },
+  { title: 'Backend Developer', department: 'Backend' },
+  { title: 'QA Engineer', department: 'Quality Assurance' },
+  { title: 'HR Manager', department: 'HR' },
+  { title: 'Content Writer', department: 'Content' },
+  { title: 'Graphic Designer', department: 'Design' },
 ];
 
-const employees: Prisma.EmployeeCreateInput[] = [
-  {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    jobTitle: { connect: { title: 'Software Engineer' } },
-    department: { connect: { name: 'Engineering' } },
-    salary: 70000,
-    hireDate: new Date('2020-01-01'),
-  },
-  {
-    name: 'Jane Smith',
-    email: 'jane.smith@example.com',
-    jobTitle: { connect: { title: 'Software Architect' } },
-    department: { connect: { name: 'Engineering' } },
-    salary: 90000,
-    hireDate: new Date('2019-01-01'),
-  },
+const employees: EmployeeSeed[] = [
   {
     name: 'Alice Johnson',
-    email: 'alice.jh@example.com',
-    jobTitle: { connect: { title: 'Product Manager' } },
-    department: { connect: { name: 'Marketing' } },
-    salary: 110000,
-    hireDate: new Date('2018-01-01'),
-  },
-  {
-    name: 'Bob Brown',
-    email: 'bob.brownie@example.com',
-    jobTitle: { connect: { title: 'Sales Representative' } },
-    department: { connect: { name: 'Sales' } },
-    salary: 80000,
-    hireDate: new Date('2017-01-01'),
-  },
-  {
-    name: 'Charlie Green',
-    email: 'charli.gremlin@example.com',
-    jobTitle: { connect: { title: 'HR Manager' } },
-    department: { connect: { name: 'HR' } },
-    salary: 120000,
-    hireDate: new Date('2016-01-01'),
-  },
-  {
-    name: 'David White',
-    email: 'david.black@example.com',
-    jobTitle: { connect: { title: 'HR Specialist' } },
-    department: { connect: { name: 'HR' } },
+    email: 'alice.johnson@example.com',
+    jobTitle: 'Software Engineer',
+    department: 'Software Engineering',
     salary: 90000,
-    hireDate: new Date('2015-01-01'),
+    hireDate: new Date('2022-01-15'),
+  },
+  {
+    name: 'Bob Smith',
+    email: 'bob.smith@example.com',
+    jobTitle: 'Frontend Developer',
+    department: 'Frontend',
+    salary: 85000,
+    hireDate: new Date('2023-02-10'),
+  },
+  {
+    name: 'Charlie Brown',
+    email: 'charlie.brown@example.com',
+    jobTitle: 'Backend Developer',
+    department: 'Backend',
+    salary: 88000,
+    hireDate: new Date('2021-07-21'),
+  },
+  {
+    name: 'Diana Ross',
+    email: 'diana.ross@example.com',
+    jobTitle: 'QA Engineer',
+    department: 'Quality Assurance',
+    salary: 75000,
+    hireDate: new Date('2022-05-05'),
+  },
+  {
+    name: 'Ethan Hunt',
+    email: 'ethan.hunt@example.com',
+    jobTitle: 'HR Manager',
+    department: 'HR',
+    salary: 80000,
+    hireDate: new Date('2020-11-15'),
+  },
+  {
+    name: 'Fiona Gallagher',
+    email: 'fiona.gallagher@example.com',
+    jobTitle: 'Content Writer',
+    department: 'Content',
+    salary: 70000,
+    hireDate: new Date('2021-08-25'),
+  },
+  {
+    name: 'George Lucas',
+    email: 'george.lucas@example.com',
+    jobTitle: 'Graphic Designer',
+    department: 'Design',
+    salary: 72000,
+    hireDate: new Date('2022-09-09'),
+  },
+  {
+    name: 'Hannah Montana',
+    email: 'hannah.montana@example.com',
+    jobTitle: 'Software Engineer',
+    department: 'Software Engineering',
+    salary: 92000,
+    hireDate: new Date('2021-12-20'),
+  },
+  {
+    name: 'Ian Somerhalder',
+    email: 'ian.somerhalder@example.com',
+    jobTitle: 'Frontend Developer',
+    department: 'Frontend',
+    salary: 86000,
+    hireDate: new Date('2023-01-30'),
+  },
+  {
+    name: 'Julia Roberts',
+    email: 'julia.roberts@example.com',
+    jobTitle: 'Backend Developer',
+    department: 'Backend',
+    salary: 89000,
+    hireDate: new Date('2020-10-10'),
   },
 ];
+
+const createDepartment = async (
+  department: DepartmentSeed,
+  departmentMap: Map<string, number>,
+  parentId?: number,
+) => {
+  const newDepartment = await prisma.department.create({
+    data: {
+      name: department.name,
+      parentId,
+    },
+  });
+
+  departmentMap.set(department.name, newDepartment.id);
+
+  if (department.children) {
+    for (const child of department.children) {
+      const childDepartmentMap = await createDepartment(
+        child,
+        departmentMap,
+        newDepartment.id,
+      );
+      for (const [key, value] of childDepartmentMap) {
+        departmentMap.set(key, value);
+      }
+    }
+  }
+
+  return departmentMap;
+};
+
+const createAllDepartments = async (departments: DepartmentSeed[]) => {
+  const departmentMap = new Map<string, number>();
+
+  for (const department of departments) {
+    const newDepartmentMap = await createDepartment(department, departmentMap);
+    for (const [key, value] of newDepartmentMap) {
+      departmentMap.set(key, value);
+    }
+  }
+
+  return departmentMap;
+};
+
+const createAllJobTitles = async (
+  jobTitles: JobTitleSeed[],
+  departmentMap: Map<string, number>,
+): Promise<Map<string, number>> => {
+  const jobTitleMap = new Map<string, number>();
+
+  for (const { department, title } of jobTitles) {
+    const departmentId =
+      typeof department === 'string'
+        ? departmentMap.get(department)
+        : department;
+
+    const newJobTitle = await prisma.jobTitle.create({
+      data: { title, department: { connect: { id: departmentId } } },
+    });
+
+    jobTitleMap.set(title, newJobTitle.id);
+  }
+
+  return jobTitleMap;
+};
 
 async function main() {
   console.log('Start seeding ...');
 
-  // save departments and job titles in a map after seeding, so we can use them to connect employees
-  const departmentMap = new Map<string, number>(); // key: department name, value: department ID
-  const jobTitleMap = new Map<string, number>(); // key: job title, value: job title ID
-
   // seed departments
-  for (const department of departments) {
-    const createdDepartment = await prisma.department.create({ data: department });
-    departmentMap.set(createdDepartment.name, createdDepartment.id);
-  }
+  const departmentMap = await createAllDepartments(departments);
 
   // seed job titles
-  for (const jobTitle of jobTitles) {
-    const createdJobTitle = await prisma.jobTitle.create({ data: jobTitle });
-    jobTitleMap.set(createdJobTitle.title, createdJobTitle.id);
-  }
+  const jobTitleMap = await createAllJobTitles(jobTitles, departmentMap);
 
   // seed employees
   for (const employee of employees) {
+    const jobTitleId =
+      typeof employee.jobTitle === 'string'
+        ? jobTitleMap.get(employee.jobTitle)
+        : employee.jobTitle;
+
+    const departmentId =
+      typeof employee.department === 'string'
+        ? departmentMap.get(employee.department)
+        : employee.department;
+
     await prisma.employee.create({
       data: {
-        ...employee,
-        department: { connect: { id: departmentMap.get(employee.department.connect.name) } },
-        jobTitle: { connect: { id: jobTitleMap.get(employee.jobTitle.connect.title) } },
+        name: employee.name,
+        email: employee.email,
+        jobTitle: { connect: { id: jobTitleId } },
+        department: { connect: { id: departmentId } },
+        salary: employee.salary,
+        hireDate: employee.hireDate,
       },
     });
   }
