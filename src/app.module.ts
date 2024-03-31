@@ -5,29 +5,21 @@ import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
 import { OrganizationsModule } from './domains/organizations/organizations.module';
 import { UsersModule } from './domains/users/users.module';
 import { EmployeesModule } from './domains/employees/employees.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      validationSchema: Joi.object({
-        DATABASE_URL: Joi.string().required(),
-      }),
     }),
     PrismaModule.forRoot({
       isGlobal: true,
-      prismaServiceOptions: {
-        middlewares: [loggingMiddleware()],
-        prismaOptions: {
-          datasources: {
-            db: { url: process.env.DATABASE_URL },
-          },
-        },
-      },
+      // prismaServiceOptions: { middlewares: [loggingMiddleware()] },
     }),
     OrganizationsModule,
     UsersModule,
     EmployeesModule,
+    CommonModule,
   ],
   controllers: [],
   providers: [],

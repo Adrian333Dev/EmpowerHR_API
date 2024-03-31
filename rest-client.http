@@ -1,0 +1,26 @@
+### Create Organization
+POST http://localhost:3000/api/organizations
+Content-Type: application/json
+
+{
+  "name": "Test Organization",
+  "description": "This is a test organization."
+}
+
+### Get All Organizations
+GET http://localhost:3000/api/organizations
+
+### Get Single Organization
+GET http://localhost:3000/api/organizations/{org_id}
+
+### Update Organization
+PATCH http://localhost:3000/api/organizations/{org_id}
+Content-Type: application/json
+
+{
+  "name": "Updated Test Organization",
+  "description": "This is an updated test organization."
+}
+
+### Delete Organization
+DELETE http://localhost:3000/api/organizations/{org_id}

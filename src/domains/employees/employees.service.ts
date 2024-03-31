@@ -11,21 +11,12 @@ export class EmployeesService {
     private readonly usersService: UsersService,
   ) {}
 
-  async create({
-    org_id,
-    department_id,
-    role_id,
-    job_title_id,
-    ...data
-  }: CreateEmployeeDto) {
+  async create(data: CreateEmployeeDto) {
     const user = await this.usersService.create(data);
     return this.prisma.employee.create({
       data: {
         employee_id: user.user_id,
-        org_id,
-        department_id,
-        role_id,
-        job_title_id,
+        ...data,
       },
     });
   }

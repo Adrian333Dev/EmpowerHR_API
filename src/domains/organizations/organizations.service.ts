@@ -1,14 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { CreateOrgDto, UpdateOrgDto } from './organizations.dto';
 import { PrismaService } from 'nestjs-prisma';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class OrganizationsService {
+  private readonly logger = new Logger(OrganizationsService.name);
   constructor(private prismaService: PrismaService) {}
 
   async create(data: CreateOrgDto) {
     return this.prismaService.organization.create({ data });
+    // try {
+    //   return await this.prismaService.organization.create({ data });
+    // } catch (error) {
+    //   this.logger.error(error);
+    // }
   }
 
   async findAll() {
