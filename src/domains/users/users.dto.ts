@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto
-  implements Omit<Prisma.UserCreateInput, 'password_hash'>
+  implements Prisma.UserCreateInput
 {
   @IsNotEmpty()
   @IsString()

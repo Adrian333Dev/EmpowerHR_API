@@ -8,113 +8,77 @@ datasource db {
 }
 
 model Organization {
-  org_id      Int          @id @default(autoincrement())
-  name        String       @unique @db.VarChar(100)
-  description String?      @db.Text
+  org_id      Int     @default(autoincrement())
+  name        String  @db.VarChar(100)
+  description String? @db.Text
+
+  // Relationships
   departments Department[]
   employees   Employee[]
 
+  // Attributes
+  @@id([org_id])
+  @@unique([name])
   @@map(name: "organizations")
 }
 
 model Department {
-  department_id        Int          @id @default(autoincrement())
-  org_id               Int
-  manager_id           Int?
-  parent_department_id Int?
-  name                 String       @db.VarChar(100)
-  organization         Organization @relation(fields: [org_id], references: [org_id])
-  manager              Employee?    @relation("manager", fields: [manager_id], references: [employee_id], onDelete: Restrict)
-  parent_department    Department?  @relation("parent_department", fields: [parent_department_id], references: [department_id], onDelete: Restrict)
-  child_departments    Department[] @relation("parent_department")
-  employees            Employee[]
+  dept_id     Int     @default(autoincrement())
+  name        String  @db.VarChar(100)
+  description String? @db.Text
 
-  @@unique([org_id, name], name: "department_name_unique")
+  // Relationships
+  org_id       Int
+  organization Organization @relation(fields: [org_id], references: [org_id])
+  parent_id    Int?
+  parent       Department?  @relation("ParentDepartment", fields: [parent_id], references: [dept_id])
+  children     Department[] @relation("ParentDepartment")
+  workers      Employee[]
+
+  // Attributes
+  @@id([dept_id])
+  @@unique([name])
   @@map(name: "departments")
 }
 
 model User {
-  user_id       Int       @id @default(autoincrement())
-  first_name    String    @db.VarChar(50)
-  last_name     String    @db.VarChar(50)
-  email         String    @unique @db.VarChar(100)
-  password_hash String    @db.VarChar(255)
-  employee      Employee?
+  user_id    Int    @default(autoincrement())
+  first_name String @db.VarChar(50)
+  last_name  String @db.VarChar(50)
+  email      String @db.VarChar(100)
+  password   String @db.VarChar(100)
 
+  // Relationships
+  employeeProfiles Employee[]
+
+  // Attributes
+  @@id([user_id])
+  @@unique([email])
   @@map(name: "users")
 }
 
 enum EmployeeRole {
-  EMPLOYEE
-  MANAGER
   ADMIN
+  MANAGER
+  EMPLOYEE
 }
 
 model Employee {
-  employee_id         Int          @id @default(autoincrement())
-  user_id             Int          @unique
-  department_id       Int
-  org_id              Int
-  role                EmployeeRole @default(EMPLOYEE)
-  job_title           String?      @default("Unassigned") @db.VarChar(100)
-  user                User         @relation(fields: [user_id], references: [user_id])
-  department          Department   @relation(fields: [department_id], references: [department_id])
-  organization        Organization @relation(fields: [org_id], references: [org_id])
-  managed_departments Department[] @relation("manager")
+  emp_id    Int
+  role      EmployeeRole
+  bio       String?      @db.Text
+  job_title String       @default("Employee") @db.VarChar(100)
 
-  @@index([employee_id], name: "employee_id_index")
+  // Relationships
+  user_id      Int
+  user         User         @relation(fields: [user_id], references: [user_id])
+  org_id       Int
+  organization Organization @relation(fields: [org_id], references: [org_id])
+  dept_id      Int
+  department   Department   @relation(fields: [dept_id], references: [dept_id])
+
+  // Attributes
+  @@id([emp_id])
+  @@unique([user_id, org_id, dept_id])
   @@map(name: "employees")
 }
-
-// performance_goals               PerformanceGoal[]
-// performance_reviews_as_employee PerformanceReview[] @relation("performance_reviews_as_employee")
-// performance_reviews_as_reviewer PerformanceReview[] @relation("performance_reviews_as_reviewer")
-// attendance_records              AttendanceRecord[]
-
-// enum GoalStatus {
-//   OPEN
-//   IN_PROGRESS
-//   COMPLETED
-// }
-
-// model PerformanceGoal {
-//   id          Int        @id @default(autoincrement())
-//   employee_id Int
-//   title       String     @db.VarChar(100)
-//   description String?    @db.Text
-//   deadline    DateTime
-//   status      GoalStatus
-//   employee    Employee   @relation(fields: [employee_id], references: [employee_id])
-
-//   @@map(name: "performance_goals")
-// }
-
-// model PerformanceReview {
-//   id          Int      @id @default(autoincrement())
-//   employee_id Int
-//   reviewer_id Int
-//   date        DateTime
-//   rating      Float
-//   comments    String?
-//   employee    Employee @relation("performance_reviews_as_employee", fields: [employee_id], references: [employee_id])
-//   reviewer    Employee @relation("performance_reviews_as_reviewer", fields: [reviewer_id], references: [employee_id])
-
-//   @@map(name: "performance_reviews")
-// }
-
-// enum AttendanceStatus {
-//   PRESENT
-//   ABSENT
-//   LATE
-// }
-
-// model AttendanceRecord {
-//   id             Int              @id @default(autoincrement())
-//   employee_id    Int
-//   check_in_time  DateTime
-//   check_out_time DateTime?
-//   status         AttendanceStatus
-//   employee       Employee         @relation(fields: [employee_id], references: [employee_id])
-
-//   @@map(name: "attendance_records")
-// }
