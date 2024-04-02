@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import { CreateOrgDto, UpdateOrgDto } from './organizations.dto';
+import { CreateOrgInput, UpdateOrgInput } from './organizations.input';
 import { PrismaService } from 'nestjs-prisma';
 import { Prisma } from '@prisma/client';
 
@@ -8,7 +8,7 @@ export class OrganizationsService {
   private readonly logger = new Logger(OrganizationsService.name);
   constructor(private prismaService: PrismaService) {}
 
-  async create(data: CreateOrgDto) {
+  async create(data: CreateOrgInput) {
     return this.prismaService.organization.create({ data });
     // try {
     //   return await this.prismaService.organization.create({ data });
@@ -29,7 +29,7 @@ export class OrganizationsService {
     return this.prismaService.organization.findUnique({ where });
   }
 
-  async update(org_id: number, data: UpdateOrgDto) {
+  async update(org_id: number, data: UpdateOrgInput) {
     return this.prismaService.organization.update({
       where: { org_id },
       data,

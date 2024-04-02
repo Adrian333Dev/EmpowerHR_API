@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { Prisma, User } from '@prisma/client';
 
-import { CreateUserDto, UpdateUserDto } from './users.dto';
+import { CreateUserInput, UpdateUserInput } from './users.input';
 import { UserRepository } from './users.repository';
 
 @Injectable()
 export abstract class IUserService {
-  abstract create(data: CreateUserDto): Promise<User>;
+  abstract create(data: CreateUserInput): Promise<User>;
   abstract findOneByEmail(email: string): Promise<User | null>;
 }
 
@@ -18,7 +18,7 @@ class UserService implements IUserService {
     this.userRepo = new UserRepository(prisma);
   }
 
-  async create(data: CreateUserDto) {
+  async create(data: CreateUserInput) {
     return this.userRepo.create({ data });
   }
 

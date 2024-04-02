@@ -2,7 +2,7 @@ import { PartialType } from '@nestjs/mapped-types';
 import { Prisma } from '@prisma/client';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class CreateOrgDto implements Prisma.OrganizationCreateInput {
+export class CreateOrgInput implements Prisma.OrganizationCreateInput {
   @IsNotEmpty()
   @IsString()
   name: string;
@@ -13,4 +13,4 @@ export class CreateOrgDto implements Prisma.OrganizationCreateInput {
 }
 
 
-export class UpdateOrgDto extends PartialType(CreateOrgDto) {}
+export class UpdateOrgInput extends PartialType(CreateOrgInput) {}

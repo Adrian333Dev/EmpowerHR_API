@@ -7,10 +7,10 @@ import {
   IsPositive,
   IsString,
 } from 'class-validator';
-import { CreateUserDto } from '../users/users.dto';
+import { CreateUserInput } from '../users/users.input';
 
-export class CreateEmployeeDto
-  extends CreateUserDto
+export class CreateEmployeeInput
+  extends CreateUserInput
   implements Prisma.EmployeeUncheckedCreateInput
 {
 
@@ -35,6 +35,6 @@ export class CreateEmployeeDto
   job_title?: string;
 }
 
-export class UpdateEmployeeDto extends PartialType(
-  OmitType(CreateEmployeeDto, ['email', 'password']),
+export class UpdateEmployeeInput extends PartialType(
+  OmitType(CreateEmployeeInput, ['email', 'password']),
 ) {}

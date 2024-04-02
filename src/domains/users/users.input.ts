@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class CreateUserDto
+export class CreateUserInput
   implements Prisma.UserCreateInput
 {
   @IsNotEmpty()
@@ -29,6 +29,6 @@ export class CreateUserDto
   password: string;
 }
 
-export class UpdateUserDto extends PartialType(
-  OmitType(CreateUserDto, ['email', 'password']),
+export class UpdateUserInput extends PartialType(
+  OmitType(CreateUserInput, ['email', 'password']),
 ) {}

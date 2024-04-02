@@ -8,15 +8,15 @@ import {
   Delete,
 } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
-import { CreateEmployeeDto, UpdateEmployeeDto } from './employees.dto';
+import { CreateEmployeeInput, UpdateEmployeeInput } from './employees.input';
   
 @Controller('organizations/:org_id/employees')
 export class EmployeesController {
   // constructor(private readonly employeesService: EmployeesService) {}
 
   // @Post()
-  // create(@Body() createEmployeeDto: CreateEmployeeDto) {
-  //   return this.employeesService.create(createEmployeeDto);
+  // create(@Body() createEmployeeInput: CreateEmployeeInput) {
+  //   return this.employeesService.create(createEmployeeInput);
   // }
 
   // @Get()
@@ -32,9 +32,9 @@ export class EmployeesController {
   // @Patch(':employee_id')
   // update(
   //   @Param('employee_id') employee_id: string,
-  //   @Body() updateEmployeeDto: UpdateEmployeeDto,
+  //   @Body() updateEmployeeInput: UpdateEmployeeInput,
   // ) {
-  //   return this.employeesService.update(+employee_id, updateEmployeeDto);
+  //   return this.employeesService.update(+employee_id, updateEmployeeInput);
   // }
 
   // @Delete(':employee_id')
