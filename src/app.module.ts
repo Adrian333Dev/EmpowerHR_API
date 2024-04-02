@@ -6,6 +6,7 @@ import { OrganizationsModule } from './domains/organizations/organizations.modul
 import { UsersModule } from './domains/users/users.module';
 import { EmployeesModule } from './domains/employees/employees.module';
 import { CommonModule } from './common/common.module';
+import { IamModule } from './iam/iam.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CommonModule } from './common/common.module';
     UsersModule,
     EmployeesModule,
     CommonModule,
+    IamModule,
   ],
   controllers: [],
   providers: [],

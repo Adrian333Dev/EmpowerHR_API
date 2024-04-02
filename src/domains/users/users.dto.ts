@@ -25,7 +25,7 @@ export class CreateUserDto
 
   @IsNotEmpty()
   @IsString()
-  @MinLength(8)
+  @MinLength(3)
   password: string;
 }
 

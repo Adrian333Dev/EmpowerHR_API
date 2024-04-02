@@ -13,6 +13,7 @@ export class CreateEmployeeDto
   extends CreateUserDto
   implements Prisma.EmployeeUncheckedCreateInput
 {
+
   @IsNotEmpty()
   @IsPositive()
   org_id: number;
@@ -23,7 +24,7 @@ export class CreateEmployeeDto
 
   @IsNotEmpty()
   @IsPositive()
-  department_id: number;
+  dept_id: number;
 
   @IsOptional()
   @IsEnum(EmployeeRole)

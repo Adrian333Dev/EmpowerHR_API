@@ -64,8 +64,8 @@ enum EmployeeRole {
 }
 
 model Employee {
-  emp_id    Int
-  role      EmployeeRole
+  emp_id    Int          @default(autoincrement())
+  role      EmployeeRole @default(EMPLOYEE)
   bio       String?      @db.Text
   job_title String       @default("Employee") @db.VarChar(100)
 
