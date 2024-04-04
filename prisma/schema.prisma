@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Organization {
-  org_id      Int     @default(autoincrement())
+  orgId      Int     @default(autoincrement())
   name        String  @db.VarChar(100)
   description String? @db.Text
 
@@ -17,34 +17,34 @@ model Organization {
   employees   Employee[]
 
   // Attributes
-  @@id([org_id])
+  @@id([orgId])
   @@unique([name])
   @@map(name: "organizations")
 }
 
 model Department {
-  dept_id     Int     @default(autoincrement())
+  deptId     Int     @default(autoincrement())
   name        String  @db.VarChar(100)
   description String? @db.Text
 
   // Relationships
-  org_id       Int
-  organization Organization @relation(fields: [org_id], references: [org_id])
-  parent_id    Int?
-  parent       Department?  @relation("ParentDepartment", fields: [parent_id], references: [dept_id])
+  orgId       Int
+  organization Organization @relation(fields: [orgId], references: [orgId])
+  parentId    Int?
+  parent       Department?  @relation("ParentDepartment", fields: [parentId], references: [deptId])
   children     Department[] @relation("ParentDepartment")
   workers      Employee[]
 
   // Attributes
-  @@id([dept_id])
+  @@id([deptId])
   @@unique([name])
   @@map(name: "departments")
 }
 
 model User {
-  user_id    Int    @default(autoincrement())
-  first_name String @db.VarChar(50)
-  last_name  String @db.VarChar(50)
+  userId    Int    @default(autoincrement())
+  firstName String @db.VarChar(50)
+  lastName  String @db.VarChar(50)
   email      String @db.VarChar(100)
   password   String @db.VarChar(100)
 
@@ -52,7 +52,7 @@ model User {
   employeeProfiles Employee[]
 
   // Attributes
-  @@id([user_id])
+  @@id([userId])
   @@unique([email])
   @@map(name: "users")
 }
@@ -64,21 +64,21 @@ enum EmployeeRole {
 }
 
 model Employee {
-  emp_id    Int          @default(autoincrement())
+  empId    Int          @default(autoincrement())
   role      EmployeeRole @default(EMPLOYEE)
   bio       String?      @db.Text
-  job_title String       @default("Employee") @db.VarChar(100)
+  jobTitle String       @default("Employee") @db.VarChar(100)
 
   // Relationships
-  user_id      Int
-  user         User         @relation(fields: [user_id], references: [user_id])
-  org_id       Int
-  organization Organization @relation(fields: [org_id], references: [org_id])
-  dept_id      Int
-  department   Department   @relation(fields: [dept_id], references: [dept_id])
+  userId      Int
+  user         User         @relation(fields: [userId], references: [userId])
+  orgId       Int
+  organization Organization @relation(fields: [orgId], references: [orgId])
+  deptId      Int
+  department   Department   @relation(fields: [deptId], references: [deptId])
 
   // Attributes
-  @@id([emp_id])
-  @@unique([user_id, org_id, dept_id])
+  @@id([empId])
+  @@unique([userId, orgId, deptId])
   @@map(name: "employees")
 }

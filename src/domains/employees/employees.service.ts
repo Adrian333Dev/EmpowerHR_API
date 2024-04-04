@@ -15,32 +15,32 @@ export class EmployeesService {
   //   const user = await this.usersService.create(data);
   //   return this.prisma.employee.create({
   //     data: {
-  //       emp_id: user.user_id,
+  //       empId: user.userId,
   //       ...data,
   //     },
   //   });
   // }
 
-  // async findAll(org_id: number) {
-  //   return this.prisma.employee.findMany({ where: { org_id } });
+  // async findAll(orgId: number) {
+  //   return this.prisma.employee.findMany({ where: { orgId } });
   // }
 
-  // async findOneById(emp_id: number) {
-  //   return this.prisma.employee.findUnique({ where: { emp_id } });
+  // async findOneById(empId: number) {
+  //   return this.prisma.employee.findUnique({ where: { empId } });
   // }
 
   // async findOne(where: Prisma.EmployeeWhereUniqueInput) {
   //   return this.prisma.employee.findUnique({ where });
   // }
 
-  // async update(emp_id: number, data: UpdateEmployeeInput) {
+  // async update(empId: number, data: UpdateEmployeeInput) {
   //   return this.prisma.employee.update({
-  //     where: { emp_id },
+  //     where: { empId },
   //     data,
   //   });
   // }
 
-  // async remove(emp_id: number) {
-  //   return this.prisma.employee.delete({ where: { emp_id } });
+  // async remove(empId: number) {
+  //   return this.prisma.employee.delete({ where: { empId } });
   // }
 }

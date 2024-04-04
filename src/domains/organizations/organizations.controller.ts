@@ -24,18 +24,18 @@ export class OrganizationsController {
     return this.orgService.findAll();
   }
 
-  @Get(':org_id')
-  findOne(@Param('org_id') org_id: number) {
-    return this.orgService.findOneById(org_id);
+  @Get(':orgId')
+  findOne(@Param('orgId') orgId: number) {
+    return this.orgService.findOneById(orgId);
   }
 
-  @Patch(':org_id')
-  update(@Param('org_id') org_id: number, @Body() updateOrgInput: UpdateOrgInput) {
-    return this.orgService.update(org_id, updateOrgInput);
+  @Patch(':orgId')
+  update(@Param('orgId') orgId: number, @Body() updateOrgInput: UpdateOrgInput) {
+    return this.orgService.update(orgId, updateOrgInput);
   }
 
-  @Delete(':org_id')
-  remove(@Param('org_id') org_id: number) {
-    return this.orgService.remove(org_id);
+  @Delete(':orgId')
+  remove(@Param('orgId') orgId: number) {
+    return this.orgService.remove(orgId);
   }
 }

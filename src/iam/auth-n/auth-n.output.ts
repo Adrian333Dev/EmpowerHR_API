@@ -1,16 +1,29 @@
 import { Expose } from 'class-transformer';
 import { IUserOutput } from './auth-n.interface';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class SignUpOutput implements IUserOutput {
   @Expose()
-  user_id: number;
+  userId: number;
 
   @Expose()
-  first_name: string;
+  firstName: string;
 
   @Expose()
-  last_name: string;
+  lastName: string;
 
   @Expose()
   email: string;
+}
+
+export class SignInOutput {
+  @Expose()
+  @IsNotEmpty()
+  @IsString()
+  access_token: string;
+
+  @Expose()
+  @IsNotEmpty()
+  @IsString()
+  refresh_token: string;
 }

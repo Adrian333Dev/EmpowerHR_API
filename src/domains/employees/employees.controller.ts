@@ -10,7 +10,7 @@ import {
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeInput, UpdateEmployeeInput } from './employees.input';
   
-@Controller('organizations/:org_id/employees')
+@Controller('organizations/:orgId/employees')
 export class EmployeesController {
   // constructor(private readonly employeesService: EmployeesService) {}
 
@@ -20,8 +20,8 @@ export class EmployeesController {
   // }
 
   // @Get()
-  // findAll(@Param('org_id') org_id: number) {
-  //   return this.employeesService.findAll(org_id);
+  // findAll(@Param('orgId') orgId: number) {
+  //   return this.employeesService.findAll(orgId);
   // }
 
   // @Get(':employee_id')

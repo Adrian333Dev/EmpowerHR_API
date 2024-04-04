@@ -11,10 +11,10 @@
 # GET http://localhost:3000/api/organizations
 
 # ### Get Single Organization
-# GET http://localhost:3000/api/organizations/{org_id}
+# GET http://localhost:3000/api/organizations/{orgId}
 
 # ### Update Organization
-# PATCH http://localhost:3000/api/organizations/{org_id}
+# PATCH http://localhost:3000/api/organizations/{orgId}
 # Content-Type: application/json
 
 # {
@@ -23,7 +23,7 @@
 # }
 
 # ### Delete Organization
-# DELETE http://localhost:3000/api/organizations/{org_id}
+# DELETE http://localhost:3000/api/organizations/{orgId}
 
 # Authentication
 
@@ -32,8 +32,8 @@ POST http://localhost:3000/api/auth/signup
 Content-Type: application/json
 
 {
-  "first_name": "Adrian",
-  "last_name": "Phoenix",
+  "firstName": "Adrian",
+  "lastName": "Phoenix",
   "email": "admin@example.com",
   "password": "password123"
 }

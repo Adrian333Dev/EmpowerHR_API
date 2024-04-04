@@ -6,15 +6,19 @@ import {
   HttpStatus,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Get,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { plainToClass } from 'class-transformer';
 
 import { IAuthNService } from './auth-n.service';
 import { BASE_ENDPOINT } from '@/common/constants';
 import { SignInInput, SignUpInput } from './auth-n.input';
-import { SignUpOutput } from './auth-n.output';
-import { plainToClass } from 'class-transformer';
+import { SignInOutput, SignUpOutput } from './auth-n.output';
+import { Auth } from './decorators';
+import { AuthType } from './enums';
 
+@Auth(AuthType.None)
 @UseInterceptors(
   new ClassSerializerInterceptor(new Reflector(), {
     excludeExtraneousValues: true,
@@ -34,6 +38,13 @@ export class AuthNController {
   @Post('signin')
   @HttpCode(HttpStatus.OK)
   async signIn(@Body() data: SignInInput) {
-    return await this.authService.signIn(data);
+    const accessToken = await this.authService.signIn(data);
+    return plainToClass(SignInOutput, accessToken);
+  }
+
+  @Auth(AuthType.Bearer)
+  @Get('test')
+  async test() {
+    return 'Test';
   }
 }

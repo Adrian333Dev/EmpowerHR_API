@@ -9,6 +9,7 @@ import { UserRepository } from './users.repository';
 export abstract class IUserService {
   abstract create(data: CreateUserInput): Promise<User>;
   abstract findOneByEmail(email: string): Promise<User | null>;
+  abstract findOneByIdOrFail(userId: number): Promise<User>;
 }
 
 @Injectable()
@@ -24,6 +25,10 @@ class UserService implements IUserService {
 
   async findOneByEmail(email: string) {
     return this.userRepo.findUnique({ where: { email } });
+  }
+
+  async findOneByIdOrFail(userId: number) {
+    return this.userRepo.findUniqueOrThrow({ where: { userId } });
   }
 }
 

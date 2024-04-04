@@ -21,22 +21,22 @@ export class OrganizationsService {
     return this.prismaService.organization.findMany();
   }
 
-  async findOneById(org_id: number) {
-    return this.prismaService.organization.findUnique({ where: { org_id } });
+  async findOneById(orgId: number) {
+    return this.prismaService.organization.findUnique({ where: { orgId } });
   }
 
   async findOne(where: Prisma.OrganizationWhereUniqueInput) {
     return this.prismaService.organization.findUnique({ where });
   }
 
-  async update(org_id: number, data: UpdateOrgInput) {
+  async update(orgId: number, data: UpdateOrgInput) {
     return this.prismaService.organization.update({
-      where: { org_id },
+      where: { orgId },
       data,
     });
   }
 
-  async remove(org_id: number) {
-    return this.prismaService.organization.delete({ where: { org_id } });
+  async remove(orgId: number) {
+    return this.prismaService.organization.delete({ where: { orgId } });
   }
 }

@@ -16,15 +16,15 @@ export class CreateEmployeeInput
 
   @IsNotEmpty()
   @IsPositive()
-  org_id: number;
+  orgId: number;
 
   @IsNotEmpty()
   @IsPositive()
-  user_id: number;
+  userId: number;
 
   @IsNotEmpty()
   @IsPositive()
-  dept_id: number;
+  deptId: number;
 
   @IsOptional()
   @IsEnum(EmployeeRole)
@@ -32,7 +32,7 @@ export class CreateEmployeeInput
 
   @IsOptional()
   @IsString()
-  job_title?: string;
+  jobTitle?: string;
 }
 
 export class UpdateEmployeeInput extends PartialType(
