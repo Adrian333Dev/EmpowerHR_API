@@ -9,5 +9,5 @@ export class SignInInput extends PickType(SignUpInput, ['email', 'password']) {}
 export class RefreshTokenDto {
   @IsNotEmpty()
   @IsString()
-  refresh_token: string;
+  refreshToken: string;
 }

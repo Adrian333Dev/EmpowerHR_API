@@ -13,7 +13,7 @@ import { plainToClass } from 'class-transformer';
 
 import { IAuthNService } from './auth-n.service';
 import { BASE_ENDPOINT } from '@/common/constants';
-import { SignInInput, SignUpInput } from './auth-n.input';
+import { SignInInput, SignUpInput, RefreshTokenDto } from './auth-n.input';
 import { SignInOutput, SignUpOutput } from './auth-n.output';
 import { Auth } from './decorators';
 import { AuthType } from './enums';
@@ -38,13 +38,14 @@ export class AuthNController {
   @Post('signin')
   @HttpCode(HttpStatus.OK)
   async signIn(@Body() data: SignInInput) {
-    const accessToken = await this.authService.signIn(data);
-    return plainToClass(SignInOutput, accessToken);
+    const tokens = await this.authService.signIn(data);
+    return plainToClass(SignInOutput, tokens);
   }
 
-  @Auth(AuthType.Bearer)
-  @Get('test')
-  async test() {
-    return 'Test';
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  async refreshTokens(@Body() data: RefreshTokenDto) {
+    const tokens = await this.authService.refreshTokens(data);
+    return plainToClass(SignInOutput, tokens);
   }
 }

@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Organization {
-  orgId      Int     @default(autoincrement())
+  orgId       Int     @default(autoincrement())
   name        String  @db.VarChar(100)
   description String? @db.Text
 
@@ -23,14 +23,14 @@ model Organization {
 }
 
 model Department {
-  deptId     Int     @default(autoincrement())
+  deptId      Int     @default(autoincrement())
   name        String  @db.VarChar(100)
   description String? @db.Text
 
   // Relationships
-  orgId       Int
+  orgId        Int
   organization Organization @relation(fields: [orgId], references: [orgId])
-  parentId    Int?
+  parentId     Int?
   parent       Department?  @relation("ParentDepartment", fields: [parentId], references: [deptId])
   children     Department[] @relation("ParentDepartment")
   workers      Employee[]
@@ -45,16 +45,28 @@ model User {
   userId    Int    @default(autoincrement())
   firstName String @db.VarChar(50)
   lastName  String @db.VarChar(50)
-  email      String @db.VarChar(100)
-  password   String @db.VarChar(100)
+  email     String @db.VarChar(100)
+  password  String @db.VarChar(100)
 
   // Relationships
   employeeProfiles Employee[]
+  refreshToken     RefreshToken?
 
   // Attributes
   @@id([userId])
   @@unique([email])
   @@map(name: "users")
+}
+
+model RefreshToken {
+  token  String @db.VarChar(255)
+  userId Int
+  user   User   @relation(fields: [userId], references: [userId])
+
+  // Attributes
+  @@id([token])
+  @@unique([userId])
+  @@map(name: "refresh_tokens")
 }
 
 enum EmployeeRole {
@@ -65,16 +77,16 @@ enum EmployeeRole {
 
 model Employee {
   empId    Int          @default(autoincrement())
-  role      EmployeeRole @default(EMPLOYEE)
-  bio       String?      @db.Text
+  role     EmployeeRole @default(EMPLOYEE)
+  bio      String?      @db.Text
   jobTitle String       @default("Employee") @db.VarChar(100)
 
   // Relationships
-  userId      Int
+  userId       Int
   user         User         @relation(fields: [userId], references: [userId])
-  orgId       Int
+  orgId        Int
   organization Organization @relation(fields: [orgId], references: [orgId])
-  deptId      Int
+  deptId       Int
   department   Department   @relation(fields: [deptId], references: [deptId])
 
   // Attributes

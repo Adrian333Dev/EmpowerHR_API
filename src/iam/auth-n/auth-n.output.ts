@@ -20,10 +20,10 @@ export class SignInOutput {
   @Expose()
   @IsNotEmpty()
   @IsString()
-  access_token: string;
+  accessToken: string;
 
   @Expose()
   @IsNotEmpty()
   @IsString()
-  refresh_token: string;
+  refreshToken: string;
 }
