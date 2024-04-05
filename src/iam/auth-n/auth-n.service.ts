@@ -4,7 +4,7 @@ import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { randomUUID } from 'crypto';
 import { User } from '@prisma/client';
 
-import { IUserService } from '@/domains/users/users.service';
+import { IUsersService } from '@/domains/users/users.service';
 import { RefreshTokenDto, SignInInput, SignUpInput } from './auth-n.input';
 import { HashingService } from '../hashing';
 import { jwtConfig as config } from '../config';
@@ -25,7 +25,7 @@ export abstract class IAuthNService {
 @Injectable()
 class AuthNService implements IAuthNService {
   constructor(
-    private readonly usersService: IUserService,
+    private readonly usersService: IUsersService,
     private readonly refreshTokenStorage: RefreshTokenStorage,
     private readonly hashingService: HashingService,
     private readonly jwtService: JwtService,
@@ -78,7 +78,8 @@ class AuthNService implements IAuthNService {
         audience: this.jwtConfig.audience,
         issuer: this.jwtConfig.issuer,
       });
-      const user = await this.usersService.findOneByIdOrFail(sub);
+      const user = await this.usersService.findOne(sub);
+      if (!user) throw new UnauthorizedException();
       await this.refreshTokenStorage.validate(
         user.userId,
         refreshTokenId,

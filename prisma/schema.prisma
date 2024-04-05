@@ -70,6 +70,7 @@ model RefreshToken {
 }
 
 enum EmployeeRole {
+  OWNER
   ADMIN
   MANAGER
   EMPLOYEE

@@ -3,36 +3,43 @@ import { PrismaService } from 'nestjs-prisma';
 import { Prisma, User } from '@prisma/client';
 
 import { CreateUserInput, UpdateUserInput } from './users.input';
-import { UserRepository } from './users.repository';
+import { IFindOneOptions } from '@/common/interface';
 
 @Injectable()
-export abstract class IUserService {
+export abstract class IUsersService {
   abstract create(data: CreateUserInput): Promise<User>;
-  abstract findOneByEmail(email: string): Promise<User | null>;
-  abstract findOneByIdOrFail(userId: number): Promise<User>;
+  abstract findOne(
+    userId: number,
+    opts?: IFindOneOptions,
+  ): Promise<User | null>;
+  abstract findOneByEmail(
+    email: string,
+    opts?: IFindOneOptions,
+  ): Promise<User | null>;
 }
 
 @Injectable()
-class UserService implements IUserService {
-  private userRepo: UserRepository;
-  constructor(prisma: PrismaService) {
-    this.userRepo = new UserRepository(prisma);
-  }
+class UsersService implements IUsersService {
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateUserInput) {
-    return this.userRepo.create({ data });
+    return this.prisma.user.create({ data });
   }
 
-  async findOneByEmail(email: string) {
-    return this.userRepo.findUnique({ where: { email } });
+  async findOne(userId: number, opts?: IFindOneOptions) {
+    if (opts?.throwOnNotFound)
+      return this.prisma.user.findUniqueOrThrow({ where: { userId } });
+    return this.prisma.user.findUnique({ where: { userId } });
   }
 
-  async findOneByIdOrFail(userId: number) {
-    return this.userRepo.findUniqueOrThrow({ where: { userId } });
+  async findOneByEmail(email: string, opts?: IFindOneOptions) {
+    if (opts?.throwOnNotFound)
+      return this.prisma.user.findUniqueOrThrow({ where: { email } });
+    return this.prisma.user.findUnique({ where: { email } });
   }
 }
 
 export const UsersServiceProvider = {
-  provide: IUserService,
-  useClass: UserService,
+  provide: IUsersService,
+  useClass: UsersService,
 } as const;

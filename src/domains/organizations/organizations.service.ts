@@ -1,42 +1,52 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import { CreateOrgInput, UpdateOrgInput } from './organizations.input';
 import { PrismaService } from 'nestjs-prisma';
-import { Prisma } from '@prisma/client';
+import { EmployeeRole, Organization, Prisma } from '@prisma/client';
+
+import { CreateOrgInput, UpdateOrgInput } from './organizations.input';
+import { IUsersService } from '../users/users.service';
+import { IEmployeesService } from '../employees/employees.service';
 
 @Injectable()
-export class OrganizationsService {
-  private readonly logger = new Logger(OrganizationsService.name);
-  constructor(private prismaService: PrismaService) {}
+export abstract class IOrganizationsService {
+  abstract create(data: CreateOrgInput): Promise<Organization>;
+}
 
-  async create(data: CreateOrgInput) {
-    return this.prismaService.organization.create({ data });
-    // try {
-    //   return await this.prismaService.organization.create({ data });
-    // } catch (error) {
-    //   this.logger.error(error);
-    // }
-  }
+@Injectable()
+class OrganizationsService implements IOrganizationsService {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly usersService: IUsersService,
+    private readonly employeesService: IEmployeesService,
+  ) {}
 
-  async findAll() {
-    return this.prismaService.organization.findMany();
-  }
+  async create({ userId, ...data }: CreateOrgInput) {
+    const user = await this.usersService.findOne(userId);
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
-  async findOneById(orgId: number) {
-    return this.prismaService.organization.findUnique({ where: { orgId } });
-  }
+    return this.prisma.$transaction(async (prisma) => {
+      const org = await prisma.organization.create({
+        data: {
+          ...data,
+          departments: {
+            create: { name: 'Root', description: 'Root department' },
+          },
+        },
+        include: { departments: true },
+      });
 
-  async findOne(where: Prisma.OrganizationWhereUniqueInput) {
-    return this.prismaService.organization.findUnique({ where });
-  }
+      await this.employeesService.create({
+        orgId: org.orgId,
+        userId: user.userId,
+        deptId: org.departments[0].deptId,
+        role: EmployeeRole.OWNER,
+      });
 
-  async update(orgId: number, data: UpdateOrgInput) {
-    return this.prismaService.organization.update({
-      where: { orgId },
-      data,
+      return org;
     });
   }
-
-  async remove(orgId: number) {
-    return this.prismaService.organization.delete({ where: { orgId } });
-  }
 }
+
+export const OrganizationsServiceProvider = {
+  provide: IOrganizationsService,
+  useClass: OrganizationsService,
+} as const;

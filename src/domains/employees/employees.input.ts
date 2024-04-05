@@ -10,10 +10,8 @@ import {
 import { CreateUserInput } from '../users/users.input';
 
 export class CreateEmployeeInput
-  extends CreateUserInput
   implements Prisma.EmployeeUncheckedCreateInput
 {
-
   @IsNotEmpty()
   @IsPositive()
   orgId: number;
@@ -35,6 +33,4 @@ export class CreateEmployeeInput
   jobTitle?: string;
 }
 
-export class UpdateEmployeeInput extends PartialType(
-  OmitType(CreateEmployeeInput, ['email', 'password']),
-) {}
+export class UpdateEmployeeInput extends PartialType(CreateEmployeeInput) {}
