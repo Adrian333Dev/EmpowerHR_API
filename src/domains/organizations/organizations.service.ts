@@ -1,22 +1,17 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { EmployeeRole, Organization, Prisma } from '@prisma/client';
+import { EmployeeRole } from '@prisma/client';
 
 import { CreateOrgInput, UpdateOrgInput } from './organizations.input';
-import { IUsersService } from '../users/users.service';
-import { IEmployeesService } from '../employees/employees.service';
+import { UsersService } from '../users/users.service';
+import { EmployeesService } from '../employees/employees.service';
 
 @Injectable()
-export abstract class IOrganizationsService {
-  abstract create(data: CreateOrgInput): Promise<Organization>;
-}
-
-@Injectable()
-class OrganizationsService implements IOrganizationsService {
+export class OrganizationsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly usersService: IUsersService,
-    private readonly employeesService: IEmployeesService,
+    private readonly usersService: UsersService,
+    private readonly employeesService: EmployeesService,
   ) {}
 
   async create({ userId, ...data }: CreateOrgInput) {
@@ -45,8 +40,3 @@ class OrganizationsService implements IOrganizationsService {
     });
   }
 }
-
-export const OrganizationsServiceProvider = {
-  provide: IOrganizationsService,
-  useClass: OrganizationsService,
-} as const;

@@ -1,11 +1,8 @@
-import { AuthNController } from './auth-n/auth-n.controller';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConfig } from './config';
 import { ConfigModule } from '@nestjs/config';
-import { HashingServiceProvider } from './hashing';
-import { AccessTokenGuard, AuthGuardProvider } from './auth-n/guards';
-import { AuthNServiceProvider } from './auth-n/auth-n.service';
+
+import { jwtConfig } from './config';
 import { UsersModule } from '@/domains/users/users.module';
 
 @Module({
@@ -14,12 +11,7 @@ import { UsersModule } from '@/domains/users/users.module';
     ConfigModule.forFeature(jwtConfig),
     UsersModule,
   ],
-  providers: [
-    HashingServiceProvider,
-    AuthNServiceProvider,
-    AuthGuardProvider,
-    AccessTokenGuard,
-  ],
-  controllers: [AuthNController],
+  providers: [],
+  controllers: [],
 })
 export class IamModule {}

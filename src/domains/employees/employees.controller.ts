@@ -8,11 +8,11 @@ import {
   Delete,
 } from '@nestjs/common';
 import { CreateEmployeeInput, UpdateEmployeeInput } from './employees.input';
-import { IEmployeesService } from './employees.service';
+import { EmployeesService } from './employees.service';
   
 @Controller('organizations/:orgId/employees')
 export class EmployeesController {
-  constructor(private readonly employeesService: IEmployeesService) {}
+  constructor(private readonly employeesService: EmployeesService) {}
 
   @Post()
   create(@Body() createEmployeeInput: CreateEmployeeInput) {

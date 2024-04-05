@@ -8,11 +8,11 @@ import {
   Delete,
 } from '@nestjs/common';
 import { CreateOrgInput, UpdateOrgInput } from './organizations.input';
-import { IOrganizationsService } from './organizations.service';
+import { OrganizationsService } from './organizations.service';
 
 @Controller('api/organizations')
 export class OrganizationsController {
-  constructor(private readonly orgService: IOrganizationsService) {}
+  constructor(private readonly orgService: OrganizationsService) {}
 
   @Post()
   create(@Body() createOrgInput: CreateOrgInput) {
