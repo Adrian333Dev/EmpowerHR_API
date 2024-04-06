@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
-import { IUserOutput } from './auth-n.interface';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { IUserOutput } from '../interfaces';
 
 export class SignUpOutput implements IUserOutput {
   @Expose()
