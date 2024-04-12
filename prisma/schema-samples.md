@@ -61,7 +61,6 @@ model Employee {
   @@index([employee_id], name: "employee_id_index")
   @@map(name: "employees")
 }
-
 ```
 
 ## Additions

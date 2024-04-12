@@ -15,7 +15,7 @@ export class OrganizationsService {
   ) {}
 
   async create({ userId, ...data }: CreateOrgInput) {
-    const user = await this.usersService.findOne(userId);
+    const user = await this.usersService.findOneById(userId);
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
     return this.prisma.$transaction(async (prisma) => {

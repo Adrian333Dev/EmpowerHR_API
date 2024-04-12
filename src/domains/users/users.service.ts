@@ -3,6 +3,7 @@ import { PrismaService } from 'nestjs-prisma';
 
 import { CreateUserInput, UpdateUserInput } from './users.input';
 import { IFindOneOptions } from '@/common/interface';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -12,15 +13,17 @@ export class UsersService {
     return this.prisma.user.create({ data });
   }
 
-  async findOne(userId: number, opts?: IFindOneOptions) {
+  async findOne(params: Prisma.UserFindUniqueArgs, opts?: IFindOneOptions) {
     if (opts?.throwOnNotFound)
-      return this.prisma.user.findUniqueOrThrow({ where: { userId } });
-    return this.prisma.user.findUnique({ where: { userId } });
+      return this.prisma.user.findUniqueOrThrow(params);
+    return this.prisma.user.findUnique(params);
   }
 
-  async findOneByEmail(email: string, opts?: IFindOneOptions) {
-    if (opts?.throwOnNotFound)
-      return this.prisma.user.findUniqueOrThrow({ where: { email } });
-    return this.prisma.user.findUnique({ where: { email } });
+  async findOneById(userId: number, opts?: IFindOneOptions) {
+    return this.findOne({ where: { userId } }, opts);
+  }
+
+  async update(params: Prisma.UserUpdateArgs) {
+    return this.prisma.user.update(params);
   }
 }

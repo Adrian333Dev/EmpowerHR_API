@@ -1,6 +1,9 @@
-import { EmployeeRole } from "@prisma/client";
+import { User, Employee, Prisma } from '@prisma/client';
 
-export interface IActiveUser {
+export interface IEmployeeProfile
+  extends Pick<Employee, 'empId' | 'orgId' | 'role'> {}
+
+export interface IJWTPayload {
   /**
    * The "subject" of the token. The value of this property is the user ID
    * that granted this token.
@@ -13,19 +16,32 @@ export interface IActiveUser {
   email: string;
 
   /**
-   * The subject's (employee) role.
+   * User's Employee Profiles.
    */
-  role: EmployeeRole;
+  employeeProfiles: IEmployeeProfile[];
 }
 
-import { User } from '@prisma/client';
-
-export interface IUserOutput extends Omit<User, 'password'> {}
+export interface IUserOutput extends Omit<User, 'password' | 'refreshToken'> {}
 
 export interface IAccessTokenPayload {
   email: string;
 }
 
 export interface IRefreshTokenPayload {
-  refreshTokenId: string;
+  refreshToken: string;
 }
+
+// User with employee profiles.
+// export interface IUserWithEmployeeProfiles
+//   extends Prisma.UserGetPayload<{
+//     include: {
+//       employeeProfiles: { select: { empId: true; orgId: true; role: true } };
+//     };
+  // }> {}
+export interface IUserWithEmployeeProfiles
+  extends Pick<
+    Prisma.UserGetPayload<{
+      include: {employeeProfiles: { select: { empId: true; orgId: true; role: true } };};
+    }>,
+    'userId' | 'email' | 'employeeProfiles'
+  > {}

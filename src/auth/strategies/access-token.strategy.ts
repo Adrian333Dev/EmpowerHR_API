@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { jwtConfig as config } from '../config';
-import { IActiveUser } from '../interfaces';
+import { IJWTPayload } from '../interfaces';
 import { ACCESS_TOKEN_STRATEGY } from '../constants';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class AccessTokenStrategy extends PassportStrategy(
     this.logger.log('Strategy initialized');
   }
 
-  validate(payload: IActiveUser) {
+  validate(payload: IJWTPayload) {
     this.logger.log(
       `Validating user ${payload.email} with subject ${payload.sub} in access token strategy`,
     );

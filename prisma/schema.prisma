@@ -50,23 +50,12 @@ model User {
 
   // Relationships
   employeeProfiles Employee[]
-  refreshToken     RefreshToken?
+  refreshToken     String?
 
   // Attributes
   @@id([userId])
   @@unique([email])
   @@map(name: "users")
-}
-
-model RefreshToken {
-  token  String @db.VarChar(255)
-  userId Int
-  user   User   @relation(fields: [userId], references: [userId])
-
-  // Attributes
-  @@id([token])
-  @@unique([userId])
-  @@map(name: "refresh_tokens")
 }
 
 enum EmployeeRole {

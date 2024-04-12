@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConfig } from './config';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '@/domains/users/users.module';
+import { HashingServiceProvider } from './hashing';
 
 const strategies = [AccessTokenStrategy, RefreshTokenStrategy];
 
@@ -15,7 +16,7 @@ const strategies = [AccessTokenStrategy, RefreshTokenStrategy];
     ConfigModule.forFeature(jwtConfig),
     UsersModule,
   ],
-  providers: [AuthService, ...strategies],
+  providers: [AuthService, ...strategies, HashingServiceProvider],
   controllers: [AuthController],
   exports: [AuthService],
 })

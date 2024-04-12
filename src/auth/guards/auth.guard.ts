@@ -10,6 +10,7 @@ import { APP_GUARD, Reflector } from '@nestjs/core';
 import { AUTH_TYPE_KEY } from '../decorators';
 import { AuthType } from '../enums';
 import { AccessTokenGuard } from './access-token.guard';
+import { RefreshTokenGuard } from './refresh-token.guard';
 
 @Injectable()
 class AuthGuard implements CanActivate {
@@ -21,11 +22,13 @@ class AuthGuard implements CanActivate {
   > = {
     [AuthType.Bearer]: this.accessTokenGuard,
     [AuthType.None]: { canActivate: () => true },
+    [AuthType.RefreshToken]: this.refreshTokenGuard,
   };
 
   constructor(
     private readonly reflector: Reflector,
     private readonly accessTokenGuard: AccessTokenGuard,
+    private readonly refreshTokenGuard: RefreshTokenGuard,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

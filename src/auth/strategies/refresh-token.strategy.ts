@@ -5,7 +5,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 
 import { jwtConfig as config } from '../config';
-import { IActiveUser } from '../interfaces';
+import { IJWTPayload } from '../interfaces';
 import { REFRESH_TOKEN_STRATEGY } from '../constants';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
     });
   }
 
-  validate(req: Request, payload: IActiveUser) {
+  validate(req: Request, payload: IJWTPayload) {
     const refreshToken = req.get('Authorization').replace('Bearer', '').trim();
     return { ...payload, refreshToken };
   }
